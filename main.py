@@ -24,7 +24,7 @@ async def set_channel(ctx):
 async def on_ready():
     global notif_channel
     print("logged in as {0.user}".format(client))
-    await client.change_presence(activity=discord.Game(name=f"{PREFIX_TEXT} help"))
+    await client.change_presence(activity=discord.Game(name=f"{PREFIX_TEXT}help"))
     ids = {}
     try:
         with open("notification_channel.json") as fin:
