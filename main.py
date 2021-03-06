@@ -9,7 +9,7 @@ voice_member_count = {}
 notif_channel = {}
 
 
-@client.command(help="set nitification channel to where this command called")
+@client.command(help="set notification channel to where this command called")
 async def set_channel(ctx):
     notif_channel[ctx.guild.id] = ctx.channel
 
