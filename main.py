@@ -1,4 +1,5 @@
 import sys
+import datetime
 import json
 import discord
 from discord.ext import commands
@@ -40,7 +41,8 @@ async def on_voice_state_update(member, before, after):
 
     guild = member.guild
     guild_id = guild.id
-    print("VC status update detected in guild '{}'".format(guild.name))
+    print(datetime.datetime.now())
+    print("\tVC status update detected in guild '{}'".format(guild.name))
 
     if voice_member_count.get(guild_id) is None:
         voice_member_count[guild_id] = 0
@@ -50,25 +52,25 @@ async def on_voice_state_update(member, before, after):
         members = client.get_channel(vc.id).members
         num_vc_member += len(members)
         for m in members:
-            print("detected member: {}".format(str(m)))
+            print("\tdetected member: {}".format(str(m)))
 
-    print("prev count is {}, now is {}".format(voice_member_count[guild_id], num_vc_member))
+    print("\tprev count is {}, now is {}".format(voice_member_count[guild_id], num_vc_member))
 
     channel_to_send = notif_channel.get(guild_id, guild.system_channel)
     if voice_member_count[guild_id] == 0 and num_vc_member > 0:
-        print("send VC started message")
+        print("\tsend VC started message")
         await channel_to_send.send("誰かが通話を始めたみたいです")
     elif voice_member_count[guild_id] > 0 and num_vc_member == 0:
-        print("send VC end message")
+        print("\tsend VC end message")
         await channel_to_send.send("そして誰もいなくなった...")
 
     voice_member_count[guild_id] = num_vc_member
 
 
 if __name__ == "__main__":
-    print("initialize")
+    print("initializing...")
 
     with open("access_token.txt") as fin:
         token = fin.read()
-
+    print("Done")
     client.run(token)
