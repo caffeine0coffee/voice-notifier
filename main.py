@@ -49,6 +49,8 @@ async def on_voice_state_update(member, before, after):
     for vc in guild.voice_channels:
         members = client.get_channel(vc.id).members
         num_vc_member += len(members)
+        for m in members:
+            print("detected member: {}".format(str(m)))
 
     print("prev count is {}, now is {}".format(voice_member_count[guild_id], num_vc_member))
 
