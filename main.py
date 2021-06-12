@@ -102,11 +102,13 @@ async def check_message_queue():
     for gid, value in message_queue.items():
         if value["send_time"] < time.time():
             st = time.localtime(value["send_time"])
-            print("send a queue message:")
+            print(datetime.datetime.now())
+            print("\tsend a queue message:")
             print(f"\ttime    : {st.tm_year}/{st.tm_mon}/{st.tm_mday} ", end='')
             print(f"{st.tm_hour}:{st.tm_min}.{st.tm_sec}")
             print("\tguild   : {}".format(value["channel"].guild.name))
             print("\tchannel : {}".format(value["channel"].name))
+            print("\ttag     : {}".format(value["tag"]))
             print("\tmessage : {}".format(value["message"]))
 
             await value["channel"].send(value["message"])
@@ -141,6 +143,9 @@ async def on_voice_state_update(member, before, after):
     if voice_member_count.get(guild.id) is None:
         voice_member_count[guild.id] = 0
 
+    print(datetime.datetime.now())
+    print("\tVC status update detected in guild '{}'".format(guild.name))
+
     # count up VC members
     num_vc_member = 0
     for vc in guild.voice_channels:
@@ -149,9 +154,6 @@ async def on_voice_state_update(member, before, after):
         for m in members:
             print("\tdetected member: {}".format(str(m)))
 
-    # log
-    print(datetime.datetime.now())
-    print("\tVC status update detected in guild '{}'".format(guild.name))
     print("\tprev count is {}, now is {}".format(voice_member_count[guild.id], num_vc_member))
 
     msg = None
@@ -180,10 +182,10 @@ async def on_voice_state_update(member, before, after):
                 "tag"       : tag
             }
             message_queue[guild.id] = queue
-            print("added message queue: tag is {}, delay is +{}".format(tag, delay))
+            print("\tadded message queue: tag is {}, delay is +{}".format(tag, delay))
         else:
             await channel_to_send.send(msg)
-            print("send message: tag is {}".format(tag))
+            print("\tsend message: tag is {}".format(tag))
 
     voice_member_count[guild.id] = num_vc_member
 
