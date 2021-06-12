@@ -134,7 +134,11 @@ async def on_voice_state_update(member, before, after):
         stat = {}
     else:
         channel_id = stat.get("notif_channel")
-        channel_to_send = client.get_channel(channel_id)
+        if channel_id is None:
+            channel_to_send = guild.system_channel
+        else:
+            channel_to_send = client.get_channel(channel_id)
+        
     
     if isTest:
         channel_to_send = client.get_channel(test_channel_id)
